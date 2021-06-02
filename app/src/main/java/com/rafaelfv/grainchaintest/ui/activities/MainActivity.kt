@@ -1,9 +1,9 @@
-package com.rafaelfv.grainchaintest
+package com.rafaelfv.grainchaintest.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.rafaelfv.grainchaintest.R
 
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
