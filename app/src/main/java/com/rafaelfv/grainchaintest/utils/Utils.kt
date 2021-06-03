@@ -3,6 +3,7 @@ package com.rafaelfv.grainchaintest.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.LocationManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -67,7 +68,19 @@ fun askForPermission(activity: AppCompatActivity, permission: String, codeReques
     }
 }
 
+fun isGpsEnabled(context: Context): Boolean {
+    val locationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    val network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    return gps || network
+}
+
 fun ImageView.getBitmapFromImageView(): Bitmap {
     this.invalidate()
     return this.drawable.toBitmap()
+}
+
+sealed class PermissionType {
+    object Location : PermissionType()
 }

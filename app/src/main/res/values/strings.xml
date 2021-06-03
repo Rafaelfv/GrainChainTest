@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">GrainChainTest</string>
+
+    <!-- common -->
+    <string name="continue_btn">Continuar</string>
+    <!-- Permission -->
+    <string name="location_permission">Por favor acepta los permisos de ubicación, de otra manera no podremos
+        guardar tus recorridos.</string>
+    <!-- Permission -->
+    <string name="location_permission_denied">¡Ups! no podremos grabar tus recorridos</string>
 </resources>

@@ -17,4 +17,19 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+    <style name="MyCustomTextViewDescription" parent="Widget.AppCompat.TextView">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MyCustomButtonColoredDialog" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/bg_field_dark</item>
+        <item name="android:textSize">@dimen/dimen_12</item>
+        <item name="android:paddingLeft">@dimen/dimen_12</item>
+        <item name="android:paddingRight">@dimen/dimen_12</item>
+    </style>
+
+
 </resources>
