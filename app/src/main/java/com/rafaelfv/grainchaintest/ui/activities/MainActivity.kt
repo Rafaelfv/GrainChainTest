@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_CODE_LOCATION_TRIGGER -> {
                 if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "onActivityResult: Result Ok")
                     val fragmentMain = viewModel.getFragmentMain() as FragmentMain
                     fragmentMain.showCurrentPosition()
                 } else {

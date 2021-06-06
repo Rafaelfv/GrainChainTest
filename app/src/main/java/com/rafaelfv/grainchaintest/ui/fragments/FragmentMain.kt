@@ -13,7 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.PendingResult
 import com.google.android.gms.common.api.Status
@@ -24,8 +27,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.rafaelfv.grainchaintest.R
+import com.rafaelfv.grainchaintest.databinding.FragmemtMainBinding
 import com.rafaelfv.grainchaintest.ui.dialogs.DialogPermission
 import com.rafaelfv.grainchaintest.utils.*
+import com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel
 
 
 class FragmentMain : Fragment(), OnMapReadyCallback {
@@ -36,6 +41,7 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var myLocation: Location? = null
     private lateinit var locationCallback: LocationCallback
+    private val viewModel: FragmentMainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +60,14 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragmemt_main, container, false)
+    ): View {
+
+        val viewDataBinding: FragmemtMainBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragmemt_main, container, false)
+        viewDataBinding.lifecycleOwner = requireActivity()
+        val view = viewDataBinding.root
+        viewDataBinding.viewModel = viewModel
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,7 +84,7 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                for (location in locationResult.locations){
+                for (location in locationResult.locations) {
                     // Update UI with location data
                     // ...
                 }
@@ -86,7 +98,11 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         locationRequest.interval = 10
         locationRequest.fastestInterval = 10
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
 
     }
 
@@ -96,49 +112,56 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         showCurrentPosition()
     }
 
+    fun showCurrentPosition() {
+        updateLocationUI()
+        getDeviceLocation()
+    }
+
     @SuppressLint("MissingPermission")
     fun getDeviceLocation() {
-        try {
-            if (Manifest.permission.ACCESS_FINE_LOCATION.isPermissionOk(requireContext())) {
-                Log.d(TAG, "getDeviceLocation: Permmisionok")
-                if (isGpsEnabled(requireContext())) {
-                    try {
-                        if (Manifest.permission.ACCESS_FINE_LOCATION.isPermissionOk(requireContext())) {
-                            val task = fusedLocationProviderClient.lastLocation
-                            task.addOnCompleteListener { result ->
-                                if (result.isSuccessful) {
-                                    if (result.result != null) {
-                                        myLocation = result.result
-                                        val ubicacionLatLng = LatLng(myLocation?.latitude ?: 19.434381,
-                                            myLocation?.longitude ?: -99.142651)
-                                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionLatLng, ZOOM_MAP))
-                                    }
-                                } else {
-                                    val ubicacionLatLng = LatLng(19.434381, -99.142651)
-                                    googleMap.moveCamera(
-                                        CameraUpdateFactory.newLatLngZoom(
-                                            ubicacionLatLng,
-                                            12f
-                                        )
+        if (Manifest.permission.ACCESS_FINE_LOCATION.isPermissionOk(requireContext())) {
+            Log.d(TAG, "getDeviceLocation: Permmisionok")
+            if (isGpsEnabled(requireContext())) {
+                try {
+                    val task = fusedLocationProviderClient.lastLocation
+                    task.addOnCompleteListener { result ->
+                        //Todo revisar caso cuando enciendes la ubicación dentro de la app.
+                        Log.d(TAG, "getDeviceLocation: ${result.toString()}")
+                        if (result.isSuccessful) {
+                            if (result.result != null) {
+                                myLocation = result.result
+                                val ubicacionLatLng = LatLng(
+                                    myLocation?.latitude ?: 19.434381,
+                                    myLocation?.longitude ?: -99.142651
+                                )
+                                googleMap.animateCamera(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                        ubicacionLatLng,
+                                        ZOOM_MAP
                                     )
-                                    googleMap.uiSettings.isMyLocationButtonEnabled = false
-                                }
+                                )
+                                viewModel.updateVisibilityBtn(true)
                             }
                         } else {
-                            permissionDialog.show()
+                            val ubicacionLatLng = LatLng(19.434381, -99.142651)
+                            googleMap.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    ubicacionLatLng,
+                                    12f
+                                )
+                            )
+                            googleMap.uiSettings.isMyLocationButtonEnabled = false
                         }
-                    } catch (e: Exception) {
-
                     }
-                } else {
-                    Log.d(TAG, "getDeviceLocation: Gps Not Enabled")
-                    displayLocationSettingsRequest(requireContext())
+                } catch (e: Exception) {
+
                 }
             } else {
-                showDialogPermission()
+                Log.d(TAG, "getDeviceLocation: Gps Not Enabled")
+                displayLocationSettingsRequest(requireContext())
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } else {
+            showDialogPermission()
         }
     }
 
@@ -149,11 +172,6 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
 
     private fun stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
-    fun showCurrentPosition() {
-        updateLocationUI()
-        getDeviceLocation()
     }
 
     @SuppressLint("MissingPermission")
@@ -207,19 +225,19 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         result.setResultCallback { result ->
             val status: Status = result.status
             when (status.statusCode) {
-                LocationSettingsStatusCodes.SUCCESS -> Log.i(TAG, "All location settings are satisfied.")
+                LocationSettingsStatusCodes.SUCCESS -> {
+                    getDeviceLocation()
+                }
                 LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                    Log.i(TAG, "Location settings are not satisfied. Show the user a dialog to upgrade location settings ")
                     try {
-                        status.startResolutionForResult(requireActivity(), REQUEST_CODE_LOCATION_TRIGGER)
+                        status.startResolutionForResult(
+                            requireActivity(),
+                            REQUEST_CODE_LOCATION_TRIGGER
+                        )
                     } catch (e: SendIntentException) {
                         Log.i(TAG, "PendingIntent unable to execute request.")
                     }
                 }
-                LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> Log.i(
-                    TAG,
-                    "Location settings are inadequate, and cannot be fixed here. Dialog not created."
-                )
             }
         }
     }

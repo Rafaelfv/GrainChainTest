@@ -1,56 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineV1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".03" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineV2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".97" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activities.MainActivity"
+        >
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineH1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".02" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".03" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineH2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".98" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".97" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".02" />
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineH2"
-        app:layout_constraintEnd_toEndOf="@id/guidelineV2"
-        app:layout_constraintStart_toStartOf="@id/guidelineV1"
-        app:layout_constraintTop_toTopOf="@id/guidelineH1">
-
-        <fragment
-            android:id="@+id/mapa_address"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".main.MainActivity" />
-
-    </RelativeLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".98" />
 
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineH2"
+            app:layout_constraintEnd_toEndOf="@id/guidelineV2"
+            app:layout_constraintStart_toStartOf="@id/guidelineV1"
+            app:layout_constraintTop_toTopOf="@id/guidelineH1">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <fragment
+                android:id="@+id/mapa_address"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".main.MainActivity" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/btn_record_route"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintEnd_toEndOf="@id/guidelineV2"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineH2"
+            android:layout_margin="20dp"
+            android:src="@mipmap/ic_route_map"
+            app:visibility="@{viewModel.visibilityBtnRecord}"
+            android:onClick="@{()->viewModel.onClickBtnRecord()}"
+            app:imageSrc="@{viewModel.srcImageRecording}"
+            />
+
+        <ImageView
+            app:visibility="@{viewModel.visibilityBtnIndicator}"
+            app:animPulse="@{viewModel.visibilityBtnIndicator}"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/record"
+            app:layout_constraintEnd_toEndOf="@id/guidelineV2"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineH2"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="90dp"
+            android:visibility="gone"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
