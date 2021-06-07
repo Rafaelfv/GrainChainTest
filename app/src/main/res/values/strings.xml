@@ -3,6 +3,10 @@
 
     <!-- common -->
     <string name="continue_btn">Continuar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Guardar</string>
+    <string name="name_cart_needed">¡Ups! Necesitamos un nombre para tu ruta.</string>
+    <string name="route_name_hint">Nombre de la ruta</string>
     <!-- Permission -->
     <string name="location_permission">Por favor acepta los permisos de ubicación, de otra manera no podremos
         guardar tus recorridos.</string>

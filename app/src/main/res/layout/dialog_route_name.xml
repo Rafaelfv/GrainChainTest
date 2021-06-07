@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="350dp">
+    android:layout_height="200dp">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".2"
+        app:layout_constraintGuide_percent=".25"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".23"
+        app:layout_constraintGuide_percent=".25"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -64,15 +64,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".7"
-        />
+        app:layout_constraintGuide_percent="0.6" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".77"
+        app:layout_constraintGuide_percent=".62"
         />
 
 
@@ -80,33 +79,65 @@
         android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:src="@drawable/destination"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        app:srcCompat="@mipmap/ic_dialog"
-        android:contentDescription="contenido" />
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
-    <TextView
-        android:id="@+id/permissionMessage"
+    <EditText
+        android:id="@+id/noteText"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:hint="@string/route_name_hint"
+        android:maxLength="80"
         style="@style/MyCustomTextViewDescription"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_continue_permission"
-        style="@style/MyCustomButtonAccept"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/continue_btn"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline12" />
+        app:layout_constraintTop_toTopOf="@+id/guideline12"
+        android:weightSum="7"
+        android:layout_margin="15dp"
+        >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginEnd="3dp"
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="40dp"
+            android:text="@string/cancel"
+            android:gravity="center"
+            android:layout_gravity="center"
+            style="@style/MyCustomButtonDeny"
+            />
+
+        <Button
+            android:layout_marginStart="3dp"
+            android:id="@+id/btn_save"
+            style="@style/MyCustomButtonAccept"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="40dp"
+            android:text="@string/save"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

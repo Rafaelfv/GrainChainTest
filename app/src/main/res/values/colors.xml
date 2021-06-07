@@ -7,5 +7,6 @@
     <color name="baseColorBlueBlack">#0d3b5c</color>
     <color name="white">#FCFEFF</color>
     <color name="black">#272829</color>
+    <color name="colorDenyBtn">#ADF40A4D</color>
 
 </resources>

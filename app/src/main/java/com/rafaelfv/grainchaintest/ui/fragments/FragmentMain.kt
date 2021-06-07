@@ -12,11 +12,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.PendingResult
 import com.google.android.gms.common.api.Status
@@ -25,9 +29,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.rafaelfv.grainchaintest.R
 import com.rafaelfv.grainchaintest.databinding.FragmemtMainBinding
+import com.rafaelfv.grainchaintest.ui.dialogs.DialogNameRoute
 import com.rafaelfv.grainchaintest.ui.dialogs.DialogPermission
 import com.rafaelfv.grainchaintest.utils.*
 import com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel
@@ -37,6 +45,7 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
 
 
     private lateinit var permissionDialog: DialogPermission
+    private lateinit var dialogNameRoute: DialogNameRoute
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var myLocation: Location? = null
@@ -47,6 +56,19 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
+        dialogNameRoute = DialogNameRoute(requireContext(), object : DialogNameRoute.DialogEvent {
+            override fun saveRoute(name: String) {
+                viewModel.saveRoute(name)
+            }
+
+            override fun cancel() {
+                dialogNameRoute.dismiss()
+                viewModel.cleanListLatLong()
+                googleMap.clear()
+            }
+
+        })
+
         permissionDialog =
             DialogPermission(requireContext(), object : DialogPermission.DialogPermissionType {
                 override fun showAskPermission(permission: PermissionType) {
@@ -80,23 +102,41 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
                 for (location in locationResult.locations) {
-                    // Update UI with location data
-                    // ...
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    viewModel.addLatLong(latLng)
                 }
             }
         }
+
+        val recordingObserver = Observer<Boolean> { recording ->
+            if (recording) {
+                Log.d(TAG, "onActivityCreated: Starting record")
+                startLocationUpdates()
+            } else {
+                Log.d(TAG, "onActivityCreated: Stop record")
+                stopLocationUpdates()
+                dialogNameRoute.show()
+            }
+        }
+
+        val markerObserver = Observer<MarkerOptions> { marker ->
+            googleMap.addMarker(marker).showInfoWindow()
+        }
+
+        viewModel.recording.observe(viewLifecycleOwner, recordingObserver)
+        viewModel.marker.observe(viewLifecycleOwner, markerObserver)
+
     }
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest()
-        locationRequest.interval = 10
-        locationRequest.fastestInterval = 10
+        locationRequest.interval = INTERVAL_UPDATE_LOCATION
+        locationRequest.fastestInterval = INTERVAL_UPDATE_LOCATION
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,
@@ -126,7 +166,7 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
                     val task = fusedLocationProviderClient.lastLocation
                     task.addOnCompleteListener { result ->
                         //Todo revisar caso cuando enciendes la ubicación dentro de la app.
-                        Log.d(TAG, "getDeviceLocation: ${result.toString()}")
+                        Log.d(TAG, "getDeviceLocation: ${result}")
                         if (result.isSuccessful) {
                             if (result.result != null) {
                                 myLocation = result.result
@@ -240,5 +280,9 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    private fun addMarker(map: GoogleMap, marker: MarkerOptions) {
+        map.addMarker(marker).showInfoWindow()
     }
 }
