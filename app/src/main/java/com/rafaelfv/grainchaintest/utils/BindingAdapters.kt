@@ -3,9 +3,12 @@ package com.rafaelfv.grainchaintest.utils
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.rafaelfv.grainchaintest.R
+import com.rafaelfv.grainchaintest.data.Route
+import com.rafaelfv.grainchaintest.ui.fragments.AdapterRoute
 
 object BindingAdapters {
 
@@ -33,4 +36,13 @@ object BindingAdapters {
         view.setImageResource(idImage)
     }
 
+    @JvmStatic
+    @BindingAdapter("adapterItems")
+    fun setItems(view: RecyclerView, items: List<Route>?) {
+        view.adapter = items?.let {
+            AdapterRoute(it).apply {
+                notifyDataSetChanged()
+            }
+        }
+    }
 }

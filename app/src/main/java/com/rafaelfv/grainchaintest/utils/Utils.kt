@@ -3,6 +3,7 @@ package com.rafaelfv.grainchaintest.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.location.LocationManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.gms.maps.model.LatLng
 
 /**
  * Function to replace a fragment
@@ -79,6 +81,18 @@ fun isGpsEnabled(context: Context): Boolean {
 fun ImageView.getBitmapFromImageView(): Bitmap {
     this.invalidate()
     return this.drawable.toBitmap()
+}
+
+fun getDistance(latLongStart: LatLng, latLongEnd: LatLng): Float{
+    val results = FloatArray(2)
+    Location.distanceBetween(
+        latLongStart.latitude,
+        latLongStart.longitude,
+        latLongEnd.latitude,
+        latLongEnd.longitude,
+        results
+    )
+    return results[0]
 }
 
 sealed class PermissionType {

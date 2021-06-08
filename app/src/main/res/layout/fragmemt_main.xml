@@ -69,6 +69,7 @@
             app:layout_constraintBottom_toTopOf="@+id/guidelineH2"
             android:layout_margin="20dp"
             android:src="@mipmap/ic_archive_routes"
+            android:onClick="@{()-> viewModel.openFragmentRoutes()}"
             app:visibility="@{viewModel.visibilityBtnRoutesSaved}"
             />
 

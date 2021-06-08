@@ -2,6 +2,7 @@ package com.rafaelfv.grainchaintest.utils
 
 //Fragment Tags
 const val FRAGMENT_TAG_MAIN = "FragmentMain"
+const val FRAGMENT_TAG_ROUTES = "FragmentRoutes"
 
 //Code request
 const val REQUEST_CODE_PERMISSION_LOCATION : Int = 0x36

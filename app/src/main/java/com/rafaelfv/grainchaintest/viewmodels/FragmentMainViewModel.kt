@@ -2,6 +2,7 @@ package com.rafaelfv.grainchaintest.viewmodels
 
 import android.content.Context
 import android.location.Location
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import com.rafaelfv.grainchaintest.R
 import com.rafaelfv.grainchaintest.base.BaseViewModel
 import com.rafaelfv.grainchaintest.db.AppDataBase
 import com.rafaelfv.grainchaintest.repository.RouteRepository
+import com.rafaelfv.grainchaintest.ui.fragments.FragmentRoutes
 import com.rafaelfv.grainchaintest.utils.MIN_DISTANCE_LOCATION
 import javax.inject.Inject
 
@@ -32,6 +34,7 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     var recording: MutableLiveData<Boolean> = MutableLiveData()
     var marker: MutableLiveData<MarkerOptions> = MutableLiveData()
     var srcImageRecording: MutableLiveData<Int> = MutableLiveData()
+    var fragmentToAdd: MutableLiveData<Fragment> = MutableLiveData()
     var listLatLong: ArrayList<LatLng> = ArrayList()
 
     private var recordingLastStatus = false
@@ -47,6 +50,10 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
 
     fun updateVisibilityBtn(visible: Boolean) {
         visibilityBtnRecord.value = visible
+    }
+
+    fun openFragmentRoutes() {
+        fragmentToAdd.value = FragmentRoutes()
     }
 
     fun onClickBtnRecord() {

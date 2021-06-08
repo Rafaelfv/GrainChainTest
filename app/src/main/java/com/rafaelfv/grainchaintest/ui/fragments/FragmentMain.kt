@@ -39,6 +39,8 @@ import com.rafaelfv.grainchaintest.ui.dialogs.DialogNameRoute
 import com.rafaelfv.grainchaintest.ui.dialogs.DialogPermission
 import com.rafaelfv.grainchaintest.utils.*
 import com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel
+import com.rafaelfv.grainchaintest.utils.addFragment
+
 
 
 class FragmentMain : Fragment(), OnMapReadyCallback {
@@ -114,6 +116,8 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
             }
         }
 
+
+
         val recordingObserver = Observer<Boolean> { recording ->
             if (recording) {
                 Log.d(TAG, "onActivityCreated: Starting record")
@@ -129,8 +133,13 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
             googleMap.addMarker(marker).showInfoWindow()
         }
 
+        val fragmentToAddObserver = Observer<Fragment> { fragment ->
+            requireActivity().supportFragmentManager.addFragment(fragment, R.id.container_main_activity, FRAGMENT_TAG_ROUTES)
+        }
+
         viewModel.recording.observe(viewLifecycleOwner, recordingObserver)
         viewModel.marker.observe(viewLifecycleOwner, markerObserver)
+        viewModel.fragmentToAdd.observe(viewLifecycleOwner, fragmentToAddObserver)
 
     }
 
