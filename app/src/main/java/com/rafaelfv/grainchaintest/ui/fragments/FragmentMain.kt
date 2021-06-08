@@ -43,7 +43,6 @@ import com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel
 
 class FragmentMain : Fragment(), OnMapReadyCallback {
 
-
     private lateinit var permissionDialog: DialogPermission
     private lateinit var dialogNameRoute: DialogNameRoute
     private lateinit var googleMap: GoogleMap

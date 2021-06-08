@@ -27,6 +27,7 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     var repository: RouteRepository
 
     var visibilityBtnRecord: MutableLiveData<Boolean> = MutableLiveData()
+    var visibilityBtnRoutesSaved: MutableLiveData<Boolean> = MutableLiveData()
     var visibilityBtnIndicator: MutableLiveData<Boolean> = MutableLiveData()
     var recording: MutableLiveData<Boolean> = MutableLiveData()
     var marker: MutableLiveData<MarkerOptions> = MutableLiveData()
@@ -38,6 +39,7 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     init {
         repository = RouteRepository(database.routeDao(), viewModelScope)
         srcImageRecording.value = R.mipmap.ic_route_map
+        visibilityBtnRoutesSaved.value = repository.isAtLeastOneRouteSaved()
         //viewModelScope.launch(Dispatchers.IO) {
         //  listRoutes = repository.getRoutes() as ArrayList<Route>
         //}
@@ -105,6 +107,7 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
         repository.insertRouteInfo(name)
         val lastId = repository.getLastRouteInfoId()
         lastId?.let { repository.insertDots(listLatLong, it) }
+        visibilityBtnRoutesSaved.value = repository.isAtLeastOneRouteSaved()
     }
 
 }

@@ -36,6 +36,7 @@ class RouteRepository(private val routeDao: RouteDao, private val viewModelScope
     fun getLastRouteInfoId(): Long? =
         routeDao.getRoutesInfo().last().id
 
+    fun isAtLeastOneRouteSaved(): Boolean = routeDao.getRoutesInfo().isNotEmpty()
 
     suspend fun getRoutes(): List<Route> =
              routeDao.getAllRoutes()
