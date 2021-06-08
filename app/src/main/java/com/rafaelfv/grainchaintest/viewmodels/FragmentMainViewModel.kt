@@ -17,12 +17,12 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
 
     @Inject
     lateinit var context: Context
+
     var visibilityBtnRecord: MutableLiveData<Boolean> = MutableLiveData()
     var visibilityBtnIndicator: MutableLiveData<Boolean> = MutableLiveData()
     var recording: MutableLiveData<Boolean> = MutableLiveData()
     var marker: MutableLiveData<MarkerOptions> = MutableLiveData()
     var srcImageRecording: MutableLiveData<Int> = MutableLiveData()
-
     var listLatLong: ArrayList<LatLng> = ArrayList()
 
 
