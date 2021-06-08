@@ -1,6 +1,7 @@
 package com.rafaelfv.grainchaintest.di.modules
 
 import com.rafaelfv.grainchaintest.db.AppDataBase
+import com.rafaelfv.grainchaintest.db.RouteDao
 import dagger.Module
 import dagger.Provides
 
@@ -16,5 +17,10 @@ class DataBaseModule {
     @Provides
     fun provideDatabase(): AppDataBase {
         return dataBase
+    }
+
+    @Provides
+    fun provideRouteDao(): RouteDao {
+        return dataBase.routeDao()
     }
 }

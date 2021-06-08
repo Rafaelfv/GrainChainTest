@@ -58,7 +58,10 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
             LocationServices.getFusedLocationProviderClient(requireActivity())
         dialogNameRoute = DialogNameRoute(requireContext(), object : DialogNameRoute.DialogEvent {
             override fun saveRoute(name: String) {
+                dialogNameRoute.dismiss()
+                googleMap.clear()
                 viewModel.saveRoute(name)
+                Toast.makeText(requireContext(), getString(R.string.route_saved_ok), Toast.LENGTH_SHORT).show()
             }
 
             override fun cancel() {

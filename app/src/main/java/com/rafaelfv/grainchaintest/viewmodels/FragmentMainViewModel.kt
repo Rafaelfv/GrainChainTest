@@ -4,6 +4,7 @@ import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.rafaelfv.grainchaintest.R
 import com.rafaelfv.grainchaintest.base.BaseViewModel
 import com.rafaelfv.grainchaintest.db.AppDataBase
+import com.rafaelfv.grainchaintest.repository.RouteRepository
 import com.rafaelfv.grainchaintest.utils.MIN_DISTANCE_LOCATION
 import javax.inject.Inject
 
@@ -22,6 +24,8 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     @Inject
     lateinit var database: AppDataBase
 
+    var repository: RouteRepository
+
     var visibilityBtnRecord: MutableLiveData<Boolean> = MutableLiveData()
     var visibilityBtnIndicator: MutableLiveData<Boolean> = MutableLiveData()
     var recording: MutableLiveData<Boolean> = MutableLiveData()
@@ -29,11 +33,14 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     var srcImageRecording: MutableLiveData<Int> = MutableLiveData()
     var listLatLong: ArrayList<LatLng> = ArrayList()
 
-
     private var recordingLastStatus = false
 
     init {
+        repository = RouteRepository(database.routeDao(), viewModelScope)
         srcImageRecording.value = R.mipmap.ic_route_map
+        //viewModelScope.launch(Dispatchers.IO) {
+        //  listRoutes = repository.getRoutes() as ArrayList<Route>
+        //}
     }
 
     fun updateVisibilityBtn(visible: Boolean) {
@@ -69,8 +76,8 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
             return
         }
 
-        val calculateDistance = { latLongStart : LatLng, latLongEnd: LatLng ->
-            val results: FloatArray = FloatArray(2)
+        val calculateDistance = { latLongStart: LatLng, latLongEnd: LatLng ->
+            val results = FloatArray(2)
             Location.distanceBetween(
                 latLongStart.latitude,
                 latLongStart.longitude,
@@ -83,12 +90,11 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
 
         val distance = calculateDistance(listLatLong.last(), latLng)
 
-        if(distance > MIN_DISTANCE_LOCATION ) {
+        if (distance > MIN_DISTANCE_LOCATION) {
             val icon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.dot3)
             this.marker.value = MarkerOptions().position(latLng).icon(icon)
             listLatLong.add(latLng)
         }
-
     }
 
     fun cleanListLatLong() {
@@ -96,7 +102,9 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     }
 
     fun saveRoute(name: String) {
-
+        repository.insertRouteInfo(name)
+        val lastId = repository.getLastRouteInfoId()
+        lastId?.let { repository.insertDots(listLatLong, it) }
     }
 
 }

@@ -10,7 +10,7 @@ const val REQUEST_CODE_LOCATION_TRIGGER : Int = 0x11
 
 const val ZOOM_MAP = 16f
 
-const val INTERVAL_UPDATE_LOCATION: Long = 15000
-const val MIN_DISTANCE_LOCATION = 20
+const val INTERVAL_UPDATE_LOCATION: Long = 10000
+const val MIN_DISTANCE_LOCATION = 5
 
 const val DataBaseName = "GrainChainTest"
