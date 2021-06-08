@@ -1,10 +1,11 @@
 package com.rafaelfv.grainchaintest.di.component
 
 import com.rafaelfv.grainchaintest.di.modules.ContextModule
+import com.rafaelfv.grainchaintest.di.modules.DataBaseModule
 import com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel
 import dagger.Component
 
-@Component(modules = [ContextModule::class])
+@Component(modules = [ContextModule::class, DataBaseModule::class])
 interface ComponentInjector {
 
     /**
@@ -16,5 +17,6 @@ interface ComponentInjector {
     interface Builder{
         fun build(): ComponentInjector
         fun contextModule(context: ContextModule): Builder
+        fun dataBaseModule(databaseModule: DataBaseModule): Builder
     }
 }

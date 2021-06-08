@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.rafaelfv.grainchaintest.R
 import com.rafaelfv.grainchaintest.base.BaseViewModel
+import com.rafaelfv.grainchaintest.db.AppDataBase
 import com.rafaelfv.grainchaintest.utils.MIN_DISTANCE_LOCATION
 import javax.inject.Inject
 
@@ -17,6 +18,9 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
 
     @Inject
     lateinit var context: Context
+
+    @Inject
+    lateinit var database: AppDataBase
 
     var visibilityBtnRecord: MutableLiveData<Boolean> = MutableLiveData()
     var visibilityBtnIndicator: MutableLiveData<Boolean> = MutableLiveData()
