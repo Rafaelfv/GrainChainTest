@@ -21,4 +21,10 @@ abstract class RouteDao {
     @Query("SELECT * FROM RouteInfo")
     abstract fun getRoutesInfo():List<RouteInfo>
 
+    @Delete
+    abstract fun deleteRouteInfo(routeInfo: RouteInfo)
+
+    @Delete
+    abstract fun deleteRouteDots(dots: List<Dot>)
+
 }

@@ -43,9 +43,6 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
         repository = RouteRepository(database.routeDao(), viewModelScope)
         srcImageRecording.value = R.mipmap.ic_route_map
         visibilityBtnRoutesSaved.value = repository.isAtLeastOneRouteSaved()
-        //viewModelScope.launch(Dispatchers.IO) {
-        //  listRoutes = repository.getRoutes() as ArrayList<Route>
-        //}
     }
 
     fun updateVisibilityBtn(visible: Boolean) {

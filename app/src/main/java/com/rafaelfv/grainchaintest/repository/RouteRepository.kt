@@ -33,12 +33,19 @@ class RouteRepository(private val routeDao: RouteDao, private val viewModelScope
         routeDao.insertRouteInfo(routeInfo)
     }
 
+    fun deleteRoute(route: Route) {
+        routeDao.deleteRouteInfo(route.routeInfo)
+        routeDao.deleteRouteDots(route.dots)
+
+    }
+
     fun getLastRouteInfoId(): Long? =
         routeDao.getRoutesInfo().last().id
 
     fun isAtLeastOneRouteSaved(): Boolean = routeDao.getRoutesInfo().isNotEmpty()
 
     suspend fun getRoutes(): List<Route> =
-             routeDao.getAllRoutes()
+        routeDao.getAllRoutes()
+
 
 }

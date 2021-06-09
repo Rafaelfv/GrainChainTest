@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FragmentRoutesViewModel: BaseViewModel() {
+class FragmentRoutesViewModel : BaseViewModel() {
 
     @Inject
     lateinit var database: AppDataBase
@@ -22,7 +22,11 @@ class FragmentRoutesViewModel: BaseViewModel() {
     init {
         repository = RouteRepository(database.routeDao(), viewModelScope)
         viewModelScope.launch(Dispatchers.IO) {
-         listRoutes.postValue(repository.getRoutes() as ArrayList<Route>)
+            listRoutes.postValue(repository.getRoutes() as ArrayList<Route>)
         }
+    }
+
+    fun refreshData() {
+        listRoutes.value = emptyList()
     }
 }

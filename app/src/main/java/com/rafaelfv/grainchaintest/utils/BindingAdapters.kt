@@ -9,6 +9,7 @@ import com.daimajia.androidanimations.library.YoYo
 import com.rafaelfv.grainchaintest.R
 import com.rafaelfv.grainchaintest.data.Route
 import com.rafaelfv.grainchaintest.ui.fragments.AdapterRoute
+import com.rafaelfv.grainchaintest.ui.fragments.FragmentRoutes.Companion.adapterRoute
 
 object BindingAdapters {
 
@@ -40,7 +41,8 @@ object BindingAdapters {
     @BindingAdapter("adapterItems")
     fun setItems(view: RecyclerView, items: List<Route>?) {
         view.adapter = items?.let {
-            AdapterRoute(it).apply {
+            adapterRoute.apply {
+                list = items
                 notifyDataSetChanged()
             }
         }

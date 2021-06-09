@@ -13,8 +13,15 @@ import com.rafaelfv.grainchaintest.data.Route
 import com.rafaelfv.grainchaintest.databinding.ItemRouteBinding
 import com.rafaelfv.grainchaintest.utils.getDistance
 
-class AdapterRoute(private val list: List<Route>) :
+class AdapterRoute(private val listener: OnItemEvents) :
     RecyclerView.Adapter<AdapterRoute.ItemRouteViewHolder>() {
+
+
+    open var list: List<Route> = ArrayList()
+
+    interface OnItemEvents {
+        fun onItemClick(position: Int, route: Route)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemRouteViewHolder =
         DataBindingUtil.inflate<ItemRouteBinding>(
@@ -28,6 +35,7 @@ class AdapterRoute(private val list: List<Route>) :
         holder.bind(list[position])
         holder.container.setOnClickListener {
             Log.d(TAG, "onBindViewHolder: Onclick")
+            listener.onItemClick(position, list[position])
         }
 
     }
@@ -39,7 +47,6 @@ class AdapterRoute(private val list: List<Route>) :
         RecyclerView.ViewHolder(binding.root) {
 
         val container = binding.containerItemRoute
-        val distance = binding.distance
 
         fun bind(route: Route) {
             binding.apply {
