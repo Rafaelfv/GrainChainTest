@@ -62,7 +62,11 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
                 dialogNameRoute.dismiss()
                 googleMap.clear()
                 viewModel.saveRoute(name)
-                Toast.makeText(requireContext(), getString(R.string.route_saved_ok), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.route_saved_ok),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun cancel() {
@@ -130,8 +134,12 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
         }
 
         val fragmentToAddObserver = Observer<Fragment> { fragment ->
-            val viewModelMainactivity : MainActivityViewModel by viewModels()
-            requireActivity().supportFragmentManager.addFragment(FragmentRoutes(), R.id.container_main_activity, FRAGMENT_TAG_ROUTES)
+            val viewModelMainactivity: MainActivityViewModel by viewModels()
+            requireActivity().supportFragmentManager.addFragment(
+                FragmentRoutes(),
+                R.id.container_main_activity,
+                FRAGMENT_TAG_ROUTES
+            )
         }
 
         viewModel.recording.observe(viewLifecycleOwner, recordingObserver)
@@ -155,7 +163,6 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p0: GoogleMap) {
-        Log.d(TAG, "onMapReady: true")
         googleMap = p0
         showCurrentPosition()
     }
@@ -168,13 +175,10 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     fun getDeviceLocation() {
         if (Manifest.permission.ACCESS_FINE_LOCATION.isPermissionOk(requireContext())) {
-            Log.d(TAG, "getDeviceLocation: Permmisionok")
             if (isGpsEnabled(requireContext())) {
                 try {
                     val task = fusedLocationProviderClient.lastLocation
                     task.addOnCompleteListener { result ->
-                        //Todo revisar caso cuando enciendes la ubicación dentro de la app.
-                        Log.d(TAG, "getDeviceLocation: ${result}")
                         if (result.isSuccessful) {
                             if (result.result != null) {
                                 myLocation = result.result
@@ -189,6 +193,8 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
                                     )
                                 )
                                 viewModel.updateVisibilityBtn(true)
+                            } else {
+                                getDeviceLocation()
                             }
                         } else {
                             val ubicacionLatLng = LatLng(19.434381, -99.142651)
@@ -205,7 +211,6 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
 
                 }
             } else {
-                Log.d(TAG, "getDeviceLocation: Gps Not Enabled")
                 displayLocationSettingsRequest(requireContext())
             }
         } else {

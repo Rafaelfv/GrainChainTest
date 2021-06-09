@@ -30,11 +30,15 @@ class FragmentRoutes : Fragment() {
         super.onCreate(savedInstanceState)
         adapterRoute = AdapterRoute(object : AdapterRoute.OnItemEvents {
             override fun onItemClick(position: Int, route: Route) {
-                val bundle  = Bundle()
+                val bundle = Bundle()
                 bundle.putParcelable(KEY_ROUTE, route)
                 val fragmentRouteDetail = FragmentRouteDetail()
                 fragmentRouteDetail.arguments = bundle
-                requireActivity().supportFragmentManager.addFragment(fragmentRouteDetail, R.id.container_main_activity, FRAGMENT_TAG_ROUTE_DETAIL)
+                requireActivity().supportFragmentManager.addFragment(
+                    fragmentRouteDetail,
+                    R.id.container_main_activity,
+                    FRAGMENT_TAG_ROUTE_DETAIL
+                )
             }
         })
     }
@@ -60,10 +64,6 @@ class FragmentRoutes : Fragment() {
             adapterRoute.list = it
             adapterRoute.notifyDataSetChanged()
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     fun onRemoveRoute(route: Route) {

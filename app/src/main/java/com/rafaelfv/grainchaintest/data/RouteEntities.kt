@@ -14,20 +14,20 @@ data class RouteInfo(
     val title: String,
     val timeStart: Long,
     val timeEnd: Long
-): Parcelable
+) : Parcelable
 
 @Parcelize
 @Entity
 data class Dot(
-    @PrimaryKey (autoGenerate = true) val id: Long? = -1,
+    @PrimaryKey(autoGenerate = true) val id: Long? = -1,
     val latitude: Double,
     val longitude: Double,
     val routeId: Long
-): Parcelable
+) : Parcelable
 
 @Parcelize
 data class Route(
     @Embedded val routeInfo: RouteInfo,
     @Relation(parentColumn = "id", entityColumn = "routeId")
     val dots: List<Dot>
-):Parcelable
+) : Parcelable

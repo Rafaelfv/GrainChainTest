@@ -18,7 +18,7 @@ interface ComponentInjector {
     fun inject(fragmentRouteDetailViewModel: FragmentRouteDetailViewModel)
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
         fun build(): ComponentInjector
         fun contextModule(context: ContextModule): Builder
         fun dataBaseModule(databaseModule: DataBaseModule): Builder

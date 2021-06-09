@@ -8,10 +8,10 @@ import com.rafaelfv.grainchaintest.data.RouteInfo
 @Dao
 abstract class RouteDao {
 
-    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertDots(listDots: List<Dot>)
 
-    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertRouteInfo(routeInfo: RouteInfo)
 
     @Transaction
@@ -19,7 +19,7 @@ abstract class RouteDao {
     abstract suspend fun getAllRoutes(): List<Route>
 
     @Query("SELECT * FROM RouteInfo")
-    abstract fun getRoutesInfo():List<RouteInfo>
+    abstract fun getRoutesInfo(): List<RouteInfo>
 
     @Delete
     abstract fun deleteRouteInfo(routeInfo: RouteInfo)

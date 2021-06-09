@@ -73,7 +73,6 @@ class FragmentRouteDetail : Fragment(), OnMapReadyCallback {
         viewModel.setTime("Desde: $dateStart hasta: $dateEnd")
 
         viewModel.onRemoveRoute.observe(viewLifecycleOwner, Observer {
-            Log.d(TAG, "onViewCreated: removed from detail")
             val viewModelMain: MainActivityViewModel by viewModels()
             route?.let { it1 -> viewModelMain.onRemoveRoute(it1) }
         })
@@ -121,9 +120,9 @@ class FragmentRouteDetail : Fragment(), OnMapReadyCallback {
                     )
                 )
                 listMarkers.add(marker)
-            }
-            else if (index == size?.minus(1)) {
-                val icon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.destination2)
+            } else if (index == size?.minus(1)) {
+                val icon: BitmapDescriptor =
+                    BitmapDescriptorFactory.fromResource(R.drawable.destination2)
                 marker = MarkerOptions().position(latLng).icon(icon)
                 listMarkers.add(marker)
             } else {
@@ -133,11 +132,10 @@ class FragmentRouteDetail : Fragment(), OnMapReadyCallback {
             }
         }
 
-        listMarkers.forEach{
+        listMarkers.forEach {
             p0.addMarker(it).showInfoWindow()
         }
     }
-
 
 
 }

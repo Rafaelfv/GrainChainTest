@@ -8,7 +8,8 @@ import com.rafaelfv.grainchaintest.utils.PermissionType
 import kotlinx.android.synthetic.main.dialog_permission.*
 
 
-class DialogPermission(context: Context, private val listener: DialogPermissionType) : Dialog(context) {
+class DialogPermission(context: Context, private val listener: DialogPermissionType) :
+    Dialog(context) {
 
     lateinit var myPermission: PermissionType
 

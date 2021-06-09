@@ -83,7 +83,7 @@ fun ImageView.getBitmapFromImageView(): Bitmap {
     return this.drawable.toBitmap()
 }
 
-fun getDistance(latLongStart: LatLng, latLongEnd: LatLng): Float{
+fun getDistance(latLongStart: LatLng, latLongEnd: LatLng): Float {
     val results = FloatArray(2)
     Location.distanceBetween(
         latLongStart.latitude,

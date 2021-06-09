@@ -32,11 +32,11 @@ class FragmentRouteDetailViewModel : BaseViewModel() {
         repository = RouteRepository(database.routeDao(), viewModelScope)
     }
 
-    fun setRoute(route: Route?){
+    fun setRoute(route: Route?) {
         this.route.value = route
     }
 
-    fun setTime(time: String){
+    fun setTime(time: String) {
         this.time.value = time
     }
 
@@ -50,7 +50,8 @@ class FragmentRouteDetailViewModel : BaseViewModel() {
 
     fun deleteRoute(route: Route?) {
         route?.let { repository.deleteRoute(it) }
-        Toast.makeText(context, context.getString(R.string.delete_success), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.delete_success), Toast.LENGTH_SHORT)
+            .show()
         onRemoveRoute.value = true
     }
 }
