@@ -16,7 +16,7 @@ class FragmentRoutesViewModel : BaseViewModel() {
     lateinit var database: AppDataBase
     var repository: RouteRepository
 
-    var listRoutes: MutableLiveData<List<Route>> = MutableLiveData()
+    var listRoutes: MutableLiveData<ArrayList<Route>> = MutableLiveData()
 
 
     init {
@@ -27,6 +27,8 @@ class FragmentRoutesViewModel : BaseViewModel() {
     }
 
     fun refreshData() {
-        listRoutes.value = emptyList()
+        viewModelScope.launch(Dispatchers.IO) {
+            listRoutes.postValue(repository.getRoutes() as ArrayList<Route>)
+        }
     }
 }

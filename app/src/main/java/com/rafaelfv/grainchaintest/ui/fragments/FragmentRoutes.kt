@@ -65,13 +65,11 @@ class FragmentRoutes : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.listRoutes.observe(viewLifecycleOwner, Observer {
-            adapterRoute.list = it
-            adapterRoute.notifyDataSetChanged()
-        })
     }
 
-    fun refreshData() {
+    fun onRemoveRoute(route: Route) {
         Log.d(TAG, "refreshData: Routess")
+        adapterRoute.list.remove(route)
+        adapterRoute.notifyDataSetChanged()
     }
 }

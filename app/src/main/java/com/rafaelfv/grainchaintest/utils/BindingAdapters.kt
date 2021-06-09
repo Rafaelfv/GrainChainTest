@@ -39,7 +39,7 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("adapterItems")
-    fun setItems(view: RecyclerView, items: List<Route>?) {
+    fun setItems(view: RecyclerView, items: ArrayList<Route>?) {
         view.adapter = items?.let {
             adapterRoute.apply {
                 list = items

@@ -70,7 +70,7 @@ class FragmentRouteDetail : Fragment(), OnMapReadyCallback {
         viewModel.onRemoveRoute.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "onViewCreated: removed from detail")
             val viewModelMain : MainActivityViewModel by viewModels()
-            viewModelMain.refreshData()
+            route?.let { it1 -> viewModelMain.onRemoveRoute(it1) }
         })
 
     }

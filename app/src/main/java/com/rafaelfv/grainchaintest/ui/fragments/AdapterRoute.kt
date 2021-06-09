@@ -17,7 +17,7 @@ class AdapterRoute(private val listener: OnItemEvents) :
     RecyclerView.Adapter<AdapterRoute.ItemRouteViewHolder>() {
 
 
-    open var list: List<Route> = ArrayList()
+    open var list: ArrayList<Route> = ArrayList()
 
     interface OnItemEvents {
         fun onItemClick(position: Int, route: Route)

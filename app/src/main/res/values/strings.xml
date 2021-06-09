@@ -6,7 +6,7 @@
     <string name="cancel">Cancelar</string>
     <string name="save">Guardar</string>
     <string name="delete">Borrar</string>
-    <string name="delete_success">Se han borrado de forma exitosa</string>
+    <string name="delete_success">Se ha borrado de forma exitosa</string>
     <string name="name_cart_needed">¡Ups! Necesitamos un nombre para tu ruta.</string>
     <string name="route_name_hint">Nombre de la ruta</string>
     <string name="route_saved_ok">Se ha guardado tu ruta 😄</string>

@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.rafaelfv.grainchaintest.base.BaseViewModel
+import com.rafaelfv.grainchaintest.data.Route
 import com.rafaelfv.grainchaintest.ui.fragments.FragmentMain
 import com.rafaelfv.grainchaintest.ui.fragments.FragmentRoutes
 import kotlin.math.log
@@ -21,8 +22,8 @@ class MainActivityViewModel : BaseViewModel() {
         return fragmentRoutes
     }
 
-    fun refreshData() {
-        fragmentRoutes.refreshData()
+    fun onRemoveRoute(route: Route) {
+        fragmentRoutes.onRemoveRoute(route)
     }
 
 }
