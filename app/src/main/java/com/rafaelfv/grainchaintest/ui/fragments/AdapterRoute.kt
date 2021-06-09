@@ -34,7 +34,6 @@ class AdapterRoute(private val listener: OnItemEvents) :
     override fun onBindViewHolder(holder: ItemRouteViewHolder, position: Int) {
         holder.bind(list[position])
         holder.container.setOnClickListener {
-            Log.d(TAG, "onBindViewHolder: Onclick")
             listener.onItemClick(position, list[position])
         }
 

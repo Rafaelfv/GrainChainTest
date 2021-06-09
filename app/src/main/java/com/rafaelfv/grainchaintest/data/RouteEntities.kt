@@ -11,7 +11,9 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 data class RouteInfo(
     @PrimaryKey(autoGenerate = true) val id: Long? = -1,
-    val title: String
+    val title: String,
+    val timeStart: Long,
+    val timeEnd: Long
 ): Parcelable
 
 @Parcelize

@@ -26,9 +26,4 @@ class FragmentRoutesViewModel : BaseViewModel() {
         }
     }
 
-    fun refreshData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            listRoutes.postValue(repository.getRoutes() as ArrayList<Route>)
-        }
-    }
 }

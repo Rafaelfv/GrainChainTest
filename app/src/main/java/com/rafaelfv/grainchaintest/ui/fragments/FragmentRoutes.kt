@@ -16,7 +16,6 @@ import com.rafaelfv.grainchaintest.databinding.FragmentListRoutesBinding
 import com.rafaelfv.grainchaintest.utils.FRAGMENT_TAG_ROUTE_DETAIL
 import com.rafaelfv.grainchaintest.utils.KEY_ROUTE
 import com.rafaelfv.grainchaintest.utils.addFragment
-import com.rafaelfv.grainchaintest.viewmodels.FragmentRouteDetailViewModel
 import com.rafaelfv.grainchaintest.viewmodels.FragmentRoutesViewModel
 
 class FragmentRoutes : Fragment() {
@@ -68,7 +67,6 @@ class FragmentRoutes : Fragment() {
     }
 
     fun onRemoveRoute(route: Route) {
-        Log.d(TAG, "refreshData: Routess")
         adapterRoute.list.remove(route)
         adapterRoute.notifyDataSetChanged()
     }

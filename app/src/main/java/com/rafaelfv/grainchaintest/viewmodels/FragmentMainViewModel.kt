@@ -28,6 +28,9 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
 
     var repository: RouteRepository
 
+    var timeStart: Long = 0
+    var timeEnd: Long = 0
+
     var visibilityBtnRecord: MutableLiveData<Boolean> = MutableLiveData()
     var visibilityBtnRoutesSaved: MutableLiveData<Boolean> = MutableLiveData()
     var visibilityBtnIndicator: MutableLiveData<Boolean> = MutableLiveData()
@@ -63,12 +66,14 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     }
 
     private fun stopRecording() {
+        timeEnd = System.currentTimeMillis()
         visibilityBtnIndicator.value = false
         srcImageRecording.value = R.mipmap.ic_route_map
         recording.value = false
     }
 
     private fun startRecording() {
+        timeStart = System.currentTimeMillis()
         visibilityBtnIndicator.value = true
         recording.value = true
         srcImageRecording.value = R.mipmap.ic_stop_record
@@ -108,7 +113,7 @@ class FragmentMainViewModel : BaseViewModel(), LifecycleObserver {
     }
 
     fun saveRoute(name: String) {
-        repository.insertRouteInfo(name)
+        repository.insertRouteInfo(name, timeStart, timeEnd)
         val lastId = repository.getLastRouteInfoId()
         lastId?.let { repository.insertDots(listLatLong, it) }
         visibilityBtnRoutesSaved.value = repository.isAtLeastOneRouteSaved()

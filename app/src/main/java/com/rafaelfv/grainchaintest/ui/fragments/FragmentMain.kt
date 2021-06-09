@@ -118,10 +118,8 @@ class FragmentMain : Fragment(), OnMapReadyCallback {
 
         val recordingObserver = Observer<Boolean> { recording ->
             if (recording) {
-                Log.d(TAG, "onActivityCreated: Starting record")
                 startLocationUpdates()
             } else {
-                Log.d(TAG, "onActivityCreated: Stop record")
                 stopLocationUpdates()
                 dialogNameRoute.show()
             }

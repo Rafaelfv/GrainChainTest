@@ -28,15 +28,14 @@ class RouteRepository(private val routeDao: RouteDao, private val viewModelScope
         }
     }
 
-    fun insertRouteInfo(name: String) {
-        val routeInfo = RouteInfo(title = name, id = null)
+    fun insertRouteInfo(name: String, timeStart: Long, timeEnd: Long) {
+        val routeInfo = RouteInfo(title = name, id = null, timeStart = timeStart, timeEnd = timeEnd)
         routeDao.insertRouteInfo(routeInfo)
     }
 
     fun deleteRoute(route: Route) {
         routeDao.deleteRouteInfo(route.routeInfo)
         routeDao.deleteRouteDots(route.dots)
-
     }
 
     fun getLastRouteInfoId(): Long? =

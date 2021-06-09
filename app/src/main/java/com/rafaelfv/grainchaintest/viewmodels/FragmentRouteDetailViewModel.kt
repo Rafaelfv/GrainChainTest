@@ -24,9 +24,9 @@ class FragmentRouteDetailViewModel : BaseViewModel() {
 
     val nameRoute: MutableLiveData<String> = MutableLiveData()
     val distance: MutableLiveData<String> = MutableLiveData()
+    val time: MutableLiveData<String> = MutableLiveData()
     val route: MutableLiveData<Route> = MutableLiveData()
     val onRemoveRoute: MutableLiveData<Any> = MutableLiveData()
-
 
     init {
         repository = RouteRepository(database.routeDao(), viewModelScope)
@@ -34,6 +34,10 @@ class FragmentRouteDetailViewModel : BaseViewModel() {
 
     fun setRoute(route: Route?){
         this.route.value = route
+    }
+
+    fun setTime(time: String){
+        this.time.value = time
     }
 
     fun setName(name: String) {

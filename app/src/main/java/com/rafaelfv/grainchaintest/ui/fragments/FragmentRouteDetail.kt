@@ -1,8 +1,8 @@
 package com.rafaelfv.grainchaintest.ui.fragments
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,15 +22,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.rafaelfv.grainchaintest.R
 import com.rafaelfv.grainchaintest.data.Dot
 import com.rafaelfv.grainchaintest.data.Route
-import com.rafaelfv.grainchaintest.databinding.FragmemtMainBinding
 import com.rafaelfv.grainchaintest.databinding.FragmentRouteDetailBinding
 import com.rafaelfv.grainchaintest.utils.KEY_ROUTE
 import com.rafaelfv.grainchaintest.utils.ZOOM_MAP
 import com.rafaelfv.grainchaintest.utils.getDistance
-import com.rafaelfv.grainchaintest.viewmodels.FragmentMainViewModel
 import com.rafaelfv.grainchaintest.viewmodels.FragmentRouteDetailViewModel
-import com.rafaelfv.grainchaintest.viewmodels.FragmentRoutesViewModel
 import com.rafaelfv.grainchaintest.viewmodels.MainActivityViewModel
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FragmentRouteDetail : Fragment(), OnMapReadyCallback {
 
@@ -63,16 +63,29 @@ class FragmentRouteDetail : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         route?.routeInfo?.title?.let { viewModel.setName(it) }
+
         route?.dots?.let { calculateDistanceinKm(it) }
             ?.let { viewModel.setDistance("Distance: $it km") }
 
+        val dateStart = route?.routeInfo?.timeStart?.let { getDateHour(it) }
+        val dateEnd = route?.routeInfo?.timeEnd?.let { getDateHour(it) }
+
+        viewModel.setTime("Desde: $dateStart hasta: $dateEnd")
 
         viewModel.onRemoveRoute.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "onViewCreated: removed from detail")
-            val viewModelMain : MainActivityViewModel by viewModels()
+            val viewModelMain: MainActivityViewModel by viewModels()
             route?.let { it1 -> viewModelMain.onRemoveRoute(it1) }
         })
 
+    }
+
+    private fun getDateHour(time: Long): String? {
+        val cal = Calendar.getInstance()
+        val timeZone = cal.timeZone
+        val format = SimpleDateFormat("hh:mm")
+        format.timeZone = timeZone
+        return format.format(Date(time))
     }
 
     private fun calculateDistanceinKm(dots: List<Dot>): String {
